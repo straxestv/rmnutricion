@@ -1,27 +1,37 @@
 .App {
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#Max{
+  max-width: 99.1% !important;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.header{
+  background: rgba(0, 0, 0, 0.3);
+  color: #ffff;
+  text-align: center;
+  padding: 1rem;
+  max-height: 6rem;
+  
 }
+.header a{
+  text-decoration: none;
+  color: #ffff !important;
+  
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+.LinkAe{
+  margin-right: 3rem;
+  font-size: 1.5rem;
+}
+.LinkA{
+  margin-left: 2rem;
+  margin-right: 3rem;
+  font-size: 1.5rem;
+}
+.App-logo{
+  margin-left: 2rem;
+  margin-right: 3rem;
+  max-width: 5rem;
+  max-height: 5rem;
 }
 /*-------------------------------------------------------------------------------/*
 /* variables de color */
@@ -35,7 +45,7 @@
   background: #6941C6;
 }
 .color2{
-  background: #026AA2;
+  color: #026AA2 !important;
 }
 /* success */
 .color3{
@@ -59,20 +69,17 @@
   background:rgba(0, 0, 0, 0.3);
 }
 body{
-  background: rgb(16, 24, 40) !important;
+  background: #f1f1f1!important;
 }
 
 .body{    
   background: rgb(16, 24, 40);
 }
 
-*{
-  font-family: "Inter", sans-serif;
-  
-  
-}
+
 a{
   text-decoration: none;
+  
 }
 #but{
   position: relative;
@@ -88,7 +95,9 @@ a{
   
   border-color: none;
 }
-
+footer,.piePagina{
+  color: #ffffff !important;
+}
 
 
 .App-link {

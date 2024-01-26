@@ -7,18 +7,17 @@ export default class Banner extends Component {
         
             <div>
 
-                <header className="header">
+                <header className="headerr">
                         <div className="bg-dark ">
                         </div>
 
                         <div className="text-header d-flex align-items-center">
                             <div className="container banner-text">
 
-                                <div className="row classss">
+                                <div className=" classss">
                                     <div className="col-sm-8">
-                                        <h1 className='classss'>Suscríbete</h1>
-                                        <p className='my-2 classss'>Si te gustaría poder acceder a todos los beneficios puedes unirte ahora por medio de la suscripción con la cual podrás disfrutar de las siguientes ventajas: Rutinas personalizadas, dietas y delivery de comida para las dietas.</p>
-                                        <a href="https://www.mercadopago.com.mx/subscriptions/checkout?preapproval_plan_id=2c93808482a3a2c60182a3a961030002" className="btn color1 text-white"> <span className="me-2 ms-2 ">¡Unete Ahora!</span> </a>
+                                        <h1 className='classss'>Propuesta de sistema para administración de activos fijos electrónicos de laboratorios pertenecientes a la academia de cómputo en ICE de la ESIME Zacatenco</h1>
+                                        <p className='my-2 classss'></p>
                                     </div>
 
                                 </div>

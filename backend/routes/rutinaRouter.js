@@ -6,172 +6,123 @@ const router = express.Router();
 
 router.post("/adm",async (req, res) => {
     const newRutina = new Rutina({
-
-        Dia1:req.body.Dia1,
-        D1E1: req.body.D1E1,
-        D1S1: req.body.D1S1,
-        D1R1: req.body.D1R1,
-
-        D1R2: req.body.D1R1,
-        D1S2: req.body.D1S2,
-        D1R2: req.body.D1R2,
-
-        D1E3: req.body.D1E3,
-        D1S3: req.body.D1S3,
-        D1R3: req.body.D1R3,
-
-        D1E4: req.body.D1E4,
-        D1S4: req.body.D1S4,
-        D1R4: req.body.D1R4,
-
-        D1E5: req.body.D1E5,
-        D1S5: req.body.D1S5,
-        D1R5: req.body.D1R5,
-
-        D1E6: req.body.D1E6,
-        D1S6: req.body.D1S6,
-        D1R6: req.body.D1R6,
-
-        D1E7: req.body.D1E7,
-        D1S7: req.body.D1S7,
-        D1R7: req.body.D1R7,
-
-        D1E8: req.body.D1E8,
-        D1S8: req.body.D1S8,
-        D1R8: req.body.D1R8,
-        // dia 2
-        Dia2:req.body.Dia2,
-        D2E1: req.body.D2E1,
-        D2S1: req.body.D2S1,
-        D2R1: req.body.D2R1,
-
-        D2E2: req.body.D2E2,
-        D2S2: req.body.D2S2,
-        D2R2: req.body.D2R2,
-
-        D2E3: req.body.D2E3,
-        D2S3: req.body.D2S3,
-        D2R3: req.body.D2R3,
-
-        D2E4: req.body.D2E4,
-        D2S4: req.body.D2S4,
-        D2R4: req.body.D2R4,
-
-        D2E5: req.body.D2E5,
-        D2S5: req.body.D2S5,
-        D2R5: req.body.D2R5,
-
-        D2E6: req.body.D2E6,
-        D2S6: req.body.D2S6,
-        D2R6: req.body.D2R6,
-
-        D2E7: req.body.D2E7,
-        D2S7: req.body.D2S7,
-        D2R7: req.body.D2R7,
-
-        D2E8: req.body.D2E8,
-        D2S8: req.body.D2E8,
-        D2R8: req.body.D2E8,
-        //DIA 3
-        Dia3:req.body.Dia3,
-        D3E1: req.body.D3E1,
-        D3S1: req.body.D3S1,
-        D3R1: req.body.D3R1,
-
-        D3E2: req.body.D3E2,
-        D3S2: req.body.D3S2,
-        D3R2: req.body.D3R2,
-
-        D3E3: req.body.D3E3,
-        D3S3: req.body.D3S3,
-        D3R3: req.body.D3R3,
-
-        D3E4: req.body.D3E4,
-        D3S4: req.body.D3S4,
-        D3R4: req.body.D3R4,
-
-        D3E5: req.body.D3E5,
-        D3S5: req.body.D3S5,
-        D3R5: req.body.D3R5,
-
-        D3E6: req.body.D3E6,
-        D3S6: req.body.D3S6,
-        D3R6: req.body.D3R6,
-
-        D3E7: req.body.D3E7,
-        D3S7: req.body.D3S7,
-        D3R7: req.body.D3R7,
-
-        D3E8: req.body.D3E8,
-        D3S8: req.body.D3E8,
-        D3R8: req.body.D3E8,
-        //DIA 4
-        Dia4:req.body.Dia4,
-        D4E1: req.body.D4E1,
-        D4S1: req.body.D4S1,
-        D4R1: req.body.D4R1,
-
-        D4E2: req.body.D4E2,
-        D4S2: req.body.D4S2,
-        D4R2: req.body.D4R2,
-
-        D4E3: req.body.D4E3,
-        D4S3: req.body.D4S3,
-        D4R3: req.body.D4R3,
-
-        D4E4: req.body.D4E4,
-        D4S4: req.body.D4S4,
-        D4R4: req.body.D4R4,
-
-        D4E5: req.body.D4E5,
-        D4S5: req.body.D4S5,
-        D4R5: req.body.D4R5,
-
-        D4E6: req.body.D4E6,
-        D4S6: req.body.D4S6,
-        D4R6: req.body.D4R6,
-
-        D4E7: req.body.D4E7,
-        D4S7: req.body.D4S7,
-        D4R7: req.body.D4R7,
-
-        D4E8: req.body.D4E8,
-        D4S8: req.body.D4E8,
-        D4R8: req.body.D4E8,
-        //DIA 5
-        Dia5:req.body.Dia5,
-        D5E1: req.body.D5E1,
-        D5S1: req.body.D5S1,
-        D5R1: req.body.D5R1,
-
-        D5E2: req.body.D5E2,
-        D5S2: req.body.D5S2,
-        D5R2: req.body.D5R2,
-
-        D5E3: req.body.D5E3,
-        D5S3: req.body.D5S3,
-        D5R3: req.body.D5R3,
-
-        D5E4: req.body.D5E4,
-        D5S4: req.body.D5S4,
-        D5R4: req.body.D5R4,
-
-        D5E5: req.body.D5E5,
-        D5S5: req.body.D5S5,
-        D5R5: req.body.D5R5,
-
-        D5E6: req.body.D5E6,
-        D5S6: req.body.D5S6,
-        D5R6: req.body.D5R6,
-
-        D5E7: req.body.D5E7,
-        D5S7: req.body.D5S7,
-        D5R7: req.body.D5R7,
-
-        D5E8: req.body.D5E8,
-        D5S8: req.body.D5E8,
-        D5R8: req.body.D5E8,
+        Laboratorio:req.body.Laboratorio,
+        NumComp:req.body.NumComp,
+        NumMonitor:req.body.NumMonitor,
+        Proyector:req.body.Proyector,
+        Switch:req.body.Switch,
         correo: req.body.correo,
+        
+
+        CompS1:req.body.CompS1,
+        CompFecha1:req.body.CompFecha1,
+        estatus1:req.body.estatus1,
+        CompS2:req.body.CompS2,
+        CompFecha2:req.body.CompFecha2,
+        estatus2:req.body.estatus2,
+        CompS3:req.body.CompS3,
+        CompFecha3:req.body.CompFecha3,
+        estatus3:req.body.estatus3,
+        CompS4:req.body.CompS4,
+        CompFecha4:req.body.CompFecha4,
+        estatus4:req.body.estatus4,
+        CompS5:req.body.CompS5,
+        CompFecha5:req.body.CompFecha5,
+        estatus5:req.body.estatus5,
+        CompS6:req.body.CompS6,
+        CompFecha6:req.body.CompFecha6,
+        estatus6:req.body.estatus6,
+        CompS7:req.body.CompS7,
+        CompFecha7:req.body.CompFecha7,
+        estatus7:req.body.estatus7,
+        CompS8:req.body.CompS8,
+        CompFecha8:req.body.CompFecha8,
+        estatus8:req.body.estatus8,
+        CompS9:req.body.CompS9,
+        CompFecha9:req.body.CompFecha9,
+        estatus9:req.body.estatus9,
+
+        //laboratorio 10-19
+        CompS10:req.body.CompS10,
+        CompFecha10:req.body.CompFecha10,
+        estatus10:req.body.estatus10,
+        CompS11:req.body.CompS11,
+        CompFecha11:req.body.CompFecha11,
+        estatus11:req.body.estatus11,
+        CompS12:req.body.CompS12,
+        CompFecha12:req.body.CompFecha12,
+        estatus12:req.body.estatus12,
+        CompS13:req.body.CompS13,
+        CompFecha13:req.body.CompFecha13,
+        estatus13:req.body.estatus13,
+        CompS14:req.body.CompS14,
+        CompFecha14:req.body.CompFecha14,
+        estatus14:req.body.estatus14,
+        CompS15:req.body.CompS15,
+        CompFecha15:req.body.CompFecha15,
+        estatus15:req.body.estatus15,
+        CompS16:req.body.CompS16,
+        CompFecha16:req.body.CompFecha16,
+        estatus16:req.body.estatus16,
+        CompS17:req.body.CompS17,
+        CompFecha17:req.body.CompFecha17,
+        estatus17:req.body.estatus17,
+        CompS18:req.body.CompS18,
+        CompFecha18:req.body.CompFecha18,
+        estatus18:req.body.estatus18,
+        CompS19:req.body.CompS19,
+        CompFecha19:req.body.CompFecha19,
+        estatus19:req.body.estatus19,
+        //laboratorio 20-29
+        CompS20:req.body.CompS20,
+        CompFecha20:req.body.CompFecha20,
+        estatus20:req.body.estatus20,
+        CompS21:req.body.CompS21,
+        CompFecha21:req.body.CompFecha21,
+        estatus21:req.body.estatus21,
+        CompS22:req.body.CompS22,
+        CompFecha22:req.body.CompFecha22,
+        estatus22:req.body.estatus22,
+        CompS23:req.body.CompS23,
+        CompFecha23:req.body.CompFecha23,
+        estatus23:req.body.estatus23,
+        CompS24:req.body.CompS24,
+        CompFecha24:req.body.CompFecha24,
+        estatus24:req.body.estatus24,
+        CompS25:req.body.CompS25,
+        CompFecha25:req.body.CompFecha25,
+        estatus25:req.body.estatus25,
+        CompS26:req.body.CompS26,
+        CompFecha26:req.body.CompFecha26,
+        estatus26:req.body.estatus26,
+        CompS27:req.body.CompS27,
+        CompFecha27:req.body.CompFecha27,
+        estatus27:req.body.estatus27,
+        CompS28:req.body.CompS28,
+        CompFecha28:req.body.CompFecha28,
+        estatus28:req.body.estatus28,
+        CompS29:req.body.CompS29,
+        CompFecha29:req.body.CompFecha29,
+        estatus29:req.body.estatus29,
+        //laboratorio 30-35
+        CompS30:req.body.CompS30,
+        CompFecha30:req.body.CompFecha30,
+        estatus30:req.body.estatus30,
+        CompS31:req.body.CompS31,
+        CompFecha31:req.body.CompFecha31,
+        estatus31:req.body.estatus31,
+        CompS32:req.body.CompS32,
+        CompFecha32:req.body.CompFecha32,
+        estatus32:req.body.estatus32,
+        CompS33:req.body.CompS33,
+        CompFecha33:req.body.CompFecha33,
+        estatus33:req.body.estatus33,
+        CompS34:req.body.CompS34,
+        CompFecha34:req.body.CompFecha34,
+        estatus34:req.body.estatus34,
+        CompS35:req.body.CompS35,
+        CompFecha35:req.body.CompFecha35,
+        estatus35:req.body.estatus35,
 
         
     });
@@ -180,15 +131,21 @@ router.post("/adm",async (req, res) => {
     
 });
 
-router.get('/adm',isAuthFactory(async (req, res) => {
-    const rut = await Rutina.find({correo:req.user.email});
+
+router.get('/adm',async (req, res) => {
+    const rut = await Rutina.find();
         //res.json(rut);
         console.log(rut);
         res.send(rut);
-})); 
+}); 
+router.get('/adma/:id',async (req, res) => {
+    const rut = await Rutina.findById(req.params.id);
+        console.log(rut);
+        res.send(rut);
+}); 
 router.get('/signin:correo', async (req, res) => {
 
-    const rut = await Rutina.find({correo:req.params.correo});
+    const rut = await Rutina.find();
     
         res.json(rut);
 

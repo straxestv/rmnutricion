@@ -1,59 +1,24 @@
+
 import React, { useContext, useEffect, useReducer } from 'react';
 import { Helmet } from 'react-helmet-async';
 import axios from 'axios';
+import {  useState } from "react";
+import { Link } from 'react-router-dom';
 
-import LoadingBox from '../../components/LoadingBox';
-import MessageBox from '../../components/MessageBox';
-import { Store } from '../../Store';
-import { getError } from '../../utils';
+// hacer fecha en calendario
 
-const reducer = (state, action) => {
-    switch (action.type) {
-        case 'FETCH_REQUEST':
-        return { ...state, loading: true };
-        case 'FETCH_SUCCESS':
-        return { ...state, orders: action.payload, loading: false };
-        case 'FETCH_FAIL':
-        return { ...state, loading: false, error: action.payload };
-        default:
-        return state;
-    }
-};
+export default function ComponentLamb() {
+    const [notes, setNotes] = useState([]);
 
-export default function NotesList() {
-    const { state } = useContext(Store);
-    const { userInfo } = state;
-
-    const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
-        loading: true,
-        error: '',
-    });
     useEffect(() => {
-        const fetchData = async () => {
-        dispatch({ type: 'FETCH_REQUEST' });
-        try {
-            const { data } = await axios.get(
-            `/api/notes/`,
-
-            { headers: { Authorization: `BEARER ${userInfo.token}` } }
-            
-            );
-            dispatch({ type: 'FETCH_SUCCESS', payload: data });
-            const res = await axios.get(
-                `/api/rutina/dm`,
-    
-                { headers: { Authorization: `BEARER ${userInfo.token}` } }
-                );
-                dispatch({ type: 'FETCH_SUCCESS', payload: res });
-        } catch (error) {
-            dispatch({
-            type: 'FETCH_FAIL',
-            payload: getError(error),
-            });
-        }
+        const getNotes = async () => {
+        const res = await axios.get(`/api/rutina/adm`);
+        console.log(res);
+        setNotes(res.data);
         };
-        fetchData();
-    }, [userInfo]);
+        getNotes();
+    }, []);
+    
     return (
         <div>
         <Helmet>
@@ -64,237 +29,499 @@ export default function NotesList() {
                 <div className="text-white text-center rgba-stylish-strong">
                     <div className="py-3">
 
-                        <h1>Contenido exclusivo</h1>
+                        <h1>Laboratorios</h1>
 
-                        <p className="mb-4 pb-2 px-md-5 mx-md-5">Si no sabes como se realizazn los ejercicios checalos en el apartado de videos</p>
-                        <a className="btn peach-gradient" href='/VideosScreen'>videos</a>
-
+                
                     </div>
                 </div>
                 </div>
-        {loading ? (
-            <LoadingBox></LoadingBox>
-        ) : error ? (
-            <MessageBox variant="danger">{error}</MessageBox>
-        ) : (
+        
             <div className="rgbcolor1 container mt-2 text-white  rounded-top">
-                    <ul className="nav nav-tabs">
-                        <li className="nav-item">
-                            <a className="nav-link" data-bs-toggle="tab" href="#Dietas">Dietas</a>
-                        </li>
-                    </ul>
-                    <div className="tab-content">
-                        <div className="tab-pane active" id="Rutinas">
-                            {
-                                    orders.map((ruti) => (
-                                        <Rutina key={ruti._id} ruti={ruti}/>
-                                        ))
-                            }
-                        </div>
+                    
+                    <div className="">
                         <div className="tab-pane" id="Dietas">
                         {
-                                    orders.map(note => (
-                                        <Card key={note._id} note={note}/>
+                                
+                                notes.map((ruti) => (
+                            <div className="row g-0 rounded shadow-sm accordion" id="accordionExample" key={ruti._id}>
+                                    
+                                    <div className="col p-4">
+                                                    <div>
+                                                        <table className="table table-dark table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th className='LambClas' colSpan="3">
+                                                                        <p  className='accordion-header" '>
+                                                                            
+                                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={"#"+ruti._id}  aria-expanded="false" aria-controls={ruti._id}>
+                                                                        Laboratorio: {ruti.Laboratorio}
+                                                                            </button>
+                                                                        </p>
+                                                                        <div className="card-header d-flex justify-content-between align-items-center">
+
+                                                                        <Link to={"/edit/" + ruti._id} className="btn btn-sm">
+                                                                            <i className="material-icons">Editar</i>
+                                                                        </Link>
+                                                                        </div>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id={ruti._id} className="accordion-collapse collapse show" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                                <tr className="table-active">
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de Computadoras{ruti.NumComp} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> Ultima fecha de mantenimiento {ruti.NumMonitor} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Proyector :{ruti.Proyector} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Switch {ruti.Switch} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr className="table-active">
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS1} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha1} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus1} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr className="table-active">
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS2} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha2} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus2} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr className="table-active">
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS3} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha3} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus3} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr className="table-active">
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS4} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha4} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus4} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS5} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha5} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus5} </p>
+                                                                    </td>
+                                                                </tr>  
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS6} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha6} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus6} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS7} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha7} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus7} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS8} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha8} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus8} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS9} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha9} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus9} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS10} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha10} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus10} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS11} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha11} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus11} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS12} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha12} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus12} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS13} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha13} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus13} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS14} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha14} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus14} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS15} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha15} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus15} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                {/* Para el número 16 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS16} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha16} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus16} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 17 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS17} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha17} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus17} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                {/* Para el número 18 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS18} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha18} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus18} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 19 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS19} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha19} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus19} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 20 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS20} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha20} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus20} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 21 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS21} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha21} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus21} </p>
+                                                                    </td>
+                                                                </tr>
+                                                                {/* Para el número 22 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS22} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha22} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus22} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 23 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS23} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha23} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus23} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 24 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS24} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha24} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus24} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 25 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS25} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha25} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus25} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 26 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS26} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha26} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus26} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 27 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS27} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha27} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus27} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 28 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS28} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha28} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus28} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 29 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS29} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha29} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus29} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 30 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS30} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha30} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus30} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 31 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS31} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha31} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus31} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 32 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS32} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha32} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus32} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 33 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS33} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha33} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus33} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 34 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS34} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha34} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus34} </p>
+                                                                    </td>
+                                                                </tr>
+
+                                                                {/* Para el número 35 */}
+                                                                <tr className={`table-active`}>
+                                                                    <th scope="row">
+                                                                        <p className='salto'>Numero de activo {ruti.CompS35} </p>
+                                                                    </th>
+                                                                    <td>
+                                                                        <p className='salto'> ¿Tiene monitor? {ruti.CompFecha35} </p>
+                                                                    </td>
+                                                                    <td>
+                                                                        <p className='salto'>Estatus: {ruti.estatus35} </p>
+                                                                    </td>
+                                                                </tr>
+
+
+                                                                
+                                                            </tbody>
+                                                        </table>
+                                            
+                                                    </div>
+                                                    
+                                                </div>
+                            </div>
                                 ))
                                 }
                         </div>
                     </div>
 
                 </div>
-        )}
+        
         </div>
     );
-}
-function Card({ note }) {
-    return  <div className=" css-fix row g-0 rounded shadow-sm">
-    <div className="col p-4">
-        <h2 className="text-center ">Dietas</h2>
-        <div>
-            <h3>Menu 1</h3>
-            <div className="container text-center">
-                <div className="row">
-                    <div className="col-sm-5 col-md-6">
-                        <ul>
-                            <h4 className="color2">Comida 1</h4>
-                            <li>
-                                <p className='salto'>{note.M1C1}</p>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="col-sm-5 offset-sm-2 col-md-6 offset-md-0">
-
-                        <ul>
-                            <h4 className="color2">Comida 2</h4>
-                            <li>
-                            <p className='salto'>{note.M1C2}</p>
-                            </li>
-                        </ul>
-
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-sm-6 col-md-5 col-lg-6">
-
-                        <ul>
-                            <h4 className="color2">Comida 3</h4>
-                            
-                            <li>
-                            <p className='salto'>{note.M1C3}</p>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div className="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
-
-                        <ul>
-                            <h4 className="color2">Comida 4</h4>
-                            <li>
-                            <p className='salto'>{note.M1C4}</p>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div className="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
-
-                        <ul>
-                            <h4 className="color2">Comida 5</h4>
-                            <li>
-                                <p className='salto'>{note.M1C4}</p>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div className="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
-
-                        <ul>
-                            <h4 className="color2">Comida 6</h4>
-                            <li>
-                                <p className='salto'>{note.M1C6}</p>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div className="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
-
-                        <ul>
-                            <h4 className="color2">Comida 7</h4>
-                            <li>
-                                <p className='salto'>{note.M1C7}</p>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div className="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
-
-                        <ul>
-                            <h4 className="color2">Comida 8</h4>
-                            <li>
-                                <p className='salto'>{note.M1C8}</p>
-                            </li>
-                        </ul>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div>
-            <h3>Menu 2</h3>
-            <div className="container text-center">
-                <div className="row">
-                    <div className="col-sm-5 col-md-6">
-                        <ul>
-                            <h4 className="color2">Comida 2</h4>
-                            <li>
-                                <p className='salto'>{note.M2C1}</p>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="col-sm-5 offset-sm-2 col-md-6 offset-md-0">
-
-                        <ul>
-                            <h4 className="color2">Comida 2</h4>
-
-                            <li>
-                                <p className='salto'>{note.M2C2}</p>
-                            </li>
-                        </ul>
-
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-sm-6 col-md-5 col-lg-6">
-
-                        <ul>
-                            <h4 className="color2">Comida 3</h4>
-                            
-                            <li>
-                                <p className='salto'>{note.M2C3}</p>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div className="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
-
-                        <ul>
-                            <h4 className="color2">Comida 4</h4>
-                            <li>
-                                <p className='salto'>{note.M2C4}</p>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div className="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
-
-                        <ul>
-                            <h4 className="color2">Comida 5</h4>
-                            <li>
-                                <p className='salto'>{note.M2C5}</p>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div className="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
-
-                        <ul>
-                            <h4 className="color2">Comida 6</h4>
-                            
-                            <li>
-                                <p className='salto'>{note.M2C6}</p>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div className="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
-
-                        <ul>
-                            <h4 className="color2">Comida 7</h4>
-                            <li>
-                                <p className='salto'>{note.M2C7}</p>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <div className="col-sm-6 col-md-5 offset-md-2 col-lg-6 offset-lg-0">
-
-                        <ul>
-                            <h4 className="color2">Comida 8</h4>
-                            
-                            <li>
-                                <p className='salto'>{note.M2C8}</p>
-                            </li>
-                        </ul>
-
-                    </div>
-
-                </div>
-                <h3>suplementos</h3>
-                <p className='salto'>{note.Suplem}</p>
-            </div>
-        </div>
-    </div>
-</div>
-
 }
 function Rutina({ ruti }) {
     return <div className="row g-0 rounded shadow-sm">
@@ -304,528 +531,47 @@ function Rutina({ ruti }) {
             <table className="table table-dark table-hover">
                 <thead>
                     <tr>
-                        <th colSpan="3"><p className='salto'>Dia 1 {ruti.Dia1}</p></th>
-                    </tr>
-                </thead>
-                <thead>
-                    <tr>
-                        <th scope="col">Ejercicio</th>
-                        <th scope="col">Series</th>
-                        <th scope="col">Repeticiones</th>
+                        <th colSpan="3"><p className='salto'>Laboratorio: {ruti.Laboratorio}</p></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr className="table-active">
                         <th scope="row">
-                            <p className='salto'>{ruti.D1E1} </p>
+                            <p className='salto'>Numero de Computadoras{ruti.NumComp} </p>
                         </th>
                         <td>
-                            <p className='salto'>{ruti.D1S1} </p>
+                            <p className='salto'>Numero de activo es {ruti.NumMonitor} </p>
                         </td>
                         <td>
-                            <p className='salto'>{ruti.D1R1} </p>
+                            <p className='salto'>Proyector :{ruti.Proyector} </p>
+                        </td>
+                        <td>
+                            <p className='salto'>Switch {ruti.Switch} </p>
                         </td>
                     </tr>
-                    <tr>
-                        <th scope="row">
-                            <p className='salto'>{ruti.D1E2} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D1S2} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D1R2} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D1E3} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D1S3} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D1R3} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D1E4} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D1S4} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D1R4} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D1E5} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D1S5} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D1R5} </p>
-                        </td>
-                    </tr>
-                    <tr >
-                        <th scope="row">
-                            <p className='salto'>{ruti.D1E6} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D1S6} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D1R6} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D1E7} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D1S7} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D1R7} </p>
-                        </td>
-                    </tr>
-                    <tr >
-                        <th scope="row">
-                            <p className='salto'>{ruti.D1E8} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D1S8} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D1R8} </p>
-                        </td>
-                    </tr>
+                    
                 </tbody>
             </table>
 
         </div>
-        <div>
-            <table className="table table-dark table-hover">
-                <thead>
-                    <tr>
-                        <th colSpan="3">Dia 2  {ruti.Dia2}</th>
-                    </tr>
-                </thead>
-                <thead>
-                    <tr>
-                        <th scope="col">Ejercicio</th>
-                        <th scope="col">Series</th>
-                        <th scope="col">Repeticiones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D2E1} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D2S1} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D2R1} </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">
-                            <p className='salto'>{ruti.D2E2} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D2S2} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D2R2} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D2E3} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D2S3} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D2R3} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D2E4} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D2S4} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D2R4} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D2E5} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D2S5} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D2R5} </p>
-                        </td>
-                    </tr>
-                    <tr >
-                        <th scope="row">
-                            <p className='salto'>{ruti.D2E6} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D2S6} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D2R6} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D2E7} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D2S7} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D2R7} </p>
-                        </td>
-                    </tr>
-                    <tr >
-                        <th scope="row">
-                            <p className='salto'>{ruti.D2E8} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D2S8} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D2R8} </p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table className="table table-dark table-hover">
-                <thead>
-                    <tr>
-                        <th colSpan="3">Dia 3  {ruti.Dia3}</th>
-                    </tr>
-                </thead>
-                <thead>
-                    <tr>
-                        <th scope="col">Ejercicio</th>
-                        <th scope="col">Series</th>
-                        <th scope="col">Repeticiones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D3E1} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D3S1} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D3R1} </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">
-                            <p className='salto'>{ruti.D3E2} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D3S2} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D3R2} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D3E3} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D3S3} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D3R3} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D3E4} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D3S4} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D3R4} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D3E5} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D3S5} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D3R5} </p>
-                        </td>
-                    </tr>
-                    <tr >
-                        <th scope="row">
-                            <p className='salto'>{ruti.D3E6} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D3S6} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D3R6} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D3E7} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D3S7} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D3R7} </p>
-                        </td>
-                    </tr>
-                    <tr >
-                        <th scope="row">
-                            <p className='salto'>{ruti.D3E8} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D3S8} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D3R8} </p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table className="table table-dark table-hover">
-                <thead>
-                    <tr>
-                        <th colSpan="3"><p className='salto'>Dia 4 {ruti.Dia4}</p></th>
-                    </tr>
-                </thead>
-                <thead>
-                    <tr>
-                        <th scope="col">Ejercicio</th>
-                        <th scope="col">Series</th>
-                        <th scope="col">Repeticiones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D4E1} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D4S1} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D4R1} </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">
-                            <p className='salto'>{ruti.D4E2} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D4S2} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D4R2} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D4E3} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D4S3} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D4R3} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D4E4} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D4S4} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D4R4} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D4E5} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D4S5} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D4R5} </p>
-                        </td>
-                    </tr>
-                    <tr >
-                        <th scope="row">
-                            <p className='salto'>{ruti.D4E6} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D4S6} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D4R6} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D4E7} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D4S7} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D4R7} </p>
-                        </td>
-                    </tr>
-                    <tr >
-                        <th scope="row">
-                            <p className='salto'>{ruti.D4E8} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D4S8} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D4R8} </p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table className="table table-dark table-hover">
-                <thead>
-                    <tr>
-                        <th colSpan="3"><p className='salto'>Dia 5 {ruti.Dia5}</p></th>
-                    </tr>
-                </thead>
-                <thead>
-                    <tr>
-                        <th scope="col">Ejercicio</th>
-                        <th scope="col">Series</th>
-                        <th scope="col">Repeticiones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D5E1} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D5S1} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D5R1} </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">
-                            <p className='salto'>{ruti.D5E2} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D5S2} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D5R2} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D5E3} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D5S3} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D5R3} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D5E4} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D5S4} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D5R4} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D5E5} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D5S5} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D5R5} </p>
-                        </td>
-                    </tr>
-                    <tr >
-                        <th scope="row">
-                            <p className='salto'>{ruti.D5E6} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D5S6} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D5R6} </p>
-                        </td>
-                    </tr>
-                    <tr className="table-active">
-                        <th scope="row">
-                            <p className='salto'>{ruti.D5E7} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D5S7} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D5R7} </p>
-                        </td>
-                    </tr>
-                    <tr >
-                        <th scope="row">
-                            <p className='salto'>{ruti.D5E8} </p>
-                        </th>
-                        <td>
-                            <p className='salto'>{ruti.D5S8} </p>
-                        </td>
-                        <td>
-                            <p className='salto'>{ruti.D5R8} </p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        
     </div>
+    <tbody id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                <tr className="table-active">
+                                                    <th scope="row">
+                                                        <p className='salto'>Numero de Computadoras{ruti.NumComp} </p>
+                                                    </th>
+                                                    <td>
+                                                        <p className='salto'>Numero de activo es {ruti.NumMonitor} </p>
+                                                    </td>
+                                                    <td>
+                                                        <p className='salto'>Proyector :{ruti.Proyector} </p>
+                                                    </td>
+                                                    <td>
+                                                        <p className='salto'>Switch {ruti.Switch} </p>
+                                                    </td>
+                                                </tr>
+                                                
+                                            </tbody>
 </div>
-
 }

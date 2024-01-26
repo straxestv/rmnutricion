@@ -586,3 +586,164 @@ function Card({ note }) {
                         </td>
                 </tr>
                 */
+                import React, { Component } from 'react'
+                import axios from 'axios'
+                
+                export default class NotesList extends Component {
+                
+                    state = {
+                        notes: [],
+                        froms: [],
+                        rut:[]
+                    }
+                
+                    async componentDidMount() {
+                        this.getNotes();
+                        this.getFrom();
+                        this.getRut();
+                    }
+                    getRut = async () => {
+                        const res = await axios.get('/api/rutina/adm')
+                        this.setState({
+                            rut: res.data
+                        });
+                        console.log(res.data)
+                    }
+                    getNotes = async () => {
+                        const res = await axios.get('/api/notes')
+                
+                        this.setState({
+                            notes: res.data
+                        });
+                        console.log(res.data)
+                        //console.log(res.data)
+                    }
+                    getFrom = async () => {
+                        const res = await axios.get('/api/ordersNote/notes')
+                        this.setState({
+                            froms: res.data
+                        });
+                        console.log(res.data)
+                    }
+                
+                    deleteNote = async (noteId) => {
+                        await axios.delete('/api/notes/' + noteId);
+                        this.getNotes();
+                    }
+                
+                    render() {
+                        return (
+                            <div>
+                                <div className="post-img">
+                                {/* Post */}
+                                <div className="text-white text-center rgba-stylish-strong">
+                                    <div className="py-3">
+                
+                                        <h1>Contenido exclusivo</h1>
+                                        <h2 className="card-title h2 my-4"></h2>
+                                        <p className="mb-4 pb-2 px-md-5 mx-md-5">Si no sabes como se realizazn los ejercicios checalos en el apartado de videos</p>
+                                        <a className="btn peach-gradient" href='/VideosScreen'>videos</a>
+                
+                                    </div>
+                                </div>
+                                </div>
+                            
+                
+                                {/* Contenido */}
+                
+                                <div className="rgbcolor1 container mt-2 text-white  rounded-top">
+                
+                                    <ul className="nav nav-tabs">
+                                        <li className="nav-item">
+                                            <a className="nav-link active" data-bs-toggle="tab" href="#Rutinas">Rutinas</a>
+                                        </li>
+                                        <li className="nav-item">
+                                            <a className="nav-link" data-bs-toggle="tab" href="#Dietas">Dietas</a>
+                                        </li>
+                                    </ul>
+                                    <div className="tab-content">
+                                        <div className="tab-pane active" id="Rutinas">
+                                        {
+                                                this.state.rut.map(ruti => (
+                                                    <Rutina key={ruti._id} ruti={ruti}/>
+                                                    ))
+                                        }
+                                        </div>
+                                    </div>
+                
+                                </div>
+                            </div>
+                
+                            
+                
+                        )
+                    }
+                }
+                function Rutina({ ruti }) {
+                        return <div>
+                                            <Helmet>
+                                                <title>Contenido exclusivo</title>
+                                            </Helmet>
+                                            <div className="post-img">
+                                                    {/* Post */}
+                                                    <div className="text-white text-center rgba-stylish-strong">
+                                                        <div className="py-3">
+                                    
+                                                            <h1>Laboratorios</h1>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                            
+                                                <div className="rgbcolor1 container mt-2 text-white  rounded-top">
+                                                        
+                                                        <div className="">
+                                                            <div className="tab-pane" id="Dietas">{
+                                                                ruti.map((ruti) => (
+                                                                <div className="row g-0 rounded shadow-sm accordion" id="accordionExample" key={ruti._id}>
+                                                                        
+                                                                    <div className="col p-4">
+                                                                        <div>
+                                                                            <table className="table table-dark table-hover">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th className='LambClas' colSpan="3">
+                                                                                            <p  className='accordion-header" '>
+                                                                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                                                                    Laboratorio: {ruti.Laboratorio}
+                                                                                                </button>
+                                                                                            </p>
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody id="collapseOne" className="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                                                    <tr className="table-active">
+                                                                                        <th scope="row">
+                                                                                            <p className='salto'>Numero de Computadoras{ruti.NumComp} </p>
+                                                                                        </th>
+                                                                                        <td>
+                                                                                            <p className='salto'>Numero de Monitores {ruti.NumMonitor} </p>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <p className='salto'>Proyector :{ruti.Proyector} </p>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <p className='salto'>Switch {ruti.Switch} </p>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    
+                                                                                </tbody>
+                                                                            </table>
+                                                                
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                                    ))
+                                                                    }
+                                                            </div>
+                                                        </div>
+                                    
+                                                    </div>
+                                            
+                                            </div>
+                    }

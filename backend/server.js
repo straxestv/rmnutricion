@@ -17,13 +17,13 @@ import userAdm from'./routes/userAdm.js';
 dotenv.config();
 
 mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log('connected to db');
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true, 
+
+    useUnifiedTopology: true 
   })
-  .catch((err) => {
-    console.log(err.message);
-  });
+    .then(() => console.log( 'Database Connected' ))
+    .catch(err => console.log( err ));
 
 const app = express();
 
@@ -35,7 +35,7 @@ app.get('/api/keys/paypal', (req, res) => {
 });
 app.get('/api/keys/google', (req, res) => {
   res.send({ key: process.env.GOOGLE_API_KEY || '' });
-});
+})
 
 app.use('/api/upload', uploadRouter);
 app.use('/api/seed', seedRouter);

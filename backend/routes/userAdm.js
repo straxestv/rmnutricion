@@ -7,6 +7,7 @@ const router = express.Router();
 router.get("/", (async (req, res) => {
     const users = await User.find({isSuscp:"true"});
     res.json(users);
+    console.log(users)
     
 }));
 

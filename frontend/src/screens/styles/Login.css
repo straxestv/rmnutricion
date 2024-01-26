@@ -1,6 +1,6 @@
 #body{
     width: 100%;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)) , url(../../public/images/bg-login.jpg) ;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)) , url(../../img/fondo.png) ;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -28,7 +28,7 @@ ul{
 }
 @media (max-width: 768px){
     #body{
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)) , url(../../public/images/bg-login.jpg);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)) , url(../../img/fondo.png);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

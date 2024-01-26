@@ -1,39 +1,53 @@
-.{
-    max-width: 18rem;
-    background: #384558; 
-    background: -webkit-linear-gradient(to right, #384558, #465366); 
-    background: linear-gradient(to right, #384558, #465366);
-    border-radius: 10%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+.card{
+  max-width: 18rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 5%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }
 @media (max-width: 761px){
-    .card{
-        background:rgba(0, 0, 0, 0.3)!important;
-      max-width: 80%;
-      max-height: 19rem;
-    }
+  .card{
+      background:rgba(0, 0, 0, 0.3)!important;
+    max-width: 80%;
+    max-height: 19rem;
+  }
 }
+.cardI{
+max-width: 18rem;
+background: rgba(0, 0, 0, 0.2);
+border-radius: 5%;
+display: flex;
+flex-wrap: wrap;
+justify-content: space-evenly;
+}
+@media (max-width: 761px){
+.card{
+    background:rgba(0, 0, 0, 0.2)!important;
+  max-width: 80%;
+  max-height: 19rem;
+}
+}
+
 .youtube{
-    color: #D92D20; ;
+  color: #D92D20; ;
 }
 #img7{
-    background-image: url(../styles/images/suplementos-alimenticios-principal.jpg);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    position: relative;
-    width: 90%;
-    min-height: 40vh;
-    margin-left: 4%;
-    border-radius: 15px;
-  } 
-  #a5{
-    position: relative;
-    margin-left: 70%;
-    top: 15rem;
-    width: 170px;
-    height: 70px;
-    border-radius: 18px;
-  }
+  
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  width: 90%;
+  min-height: 40vh;
+  margin-left: 4%;
+  border-radius: 15px;
+} 
+#a5{
+  position: relative;
+  margin-left: 70%;
+  top: 15rem;
+  width: 170px;
+  height: 70px;
+  border-radius: 18px;
+}

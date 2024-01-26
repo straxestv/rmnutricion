@@ -23,23 +23,26 @@ export default class AdmUser extends Component {
 
 
 /*
-    getUser = async (userEmail) => {
-        
-        await axios.get('http://localhost:5000/api/ordersNote/signin' + userEmail);
-        
+    deleteUser = async (userId) => {
+        const response = window.confirm('are you sure you want to delete it?');
+        if (response) {
+            await axios.delete('http://localhost:4000/api/users/' + userId);
+            this.getUsers();
+        }
     }
 */
     render() {
         return (
             <div className="row">
                 
+                <h1>Usuarios</h1>
                 <div className="col-md-8 my-5 ms-5">
                     <ul className="list-group ">
                         {
                             this.state.users.map(user => (
-                                <li className="list-group-item AmdUser list-group-item-action" key={user._id} onDoubleClick={() => this.getUser(user.email)}>
+                                <li className="list-group-item blanco AmdUser list-group-item" >
                                     
-                                    <Link to={'/UserAdmInfo/' + user.email} >{user.email}</Link>
+                                    <p>Nombre:{user.name}---------Boleta:{user.email} </p>
                                 </li>
                             ))
                         }

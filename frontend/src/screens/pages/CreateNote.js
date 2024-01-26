@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import CreateRutina from './CrearRutina'
 
 
 
@@ -138,9 +137,7 @@ export default class CreateNote extends Component {
                         <li className="nav-item">
                                 <a className="nav-link active" data-bs-toggle="tab" href="#Rutinas">Rutinas</a>
                         </li>
-                        <li className="nav-item">
-                                <a className="nav-link" data-bs-toggle="tab" href="#Dietas">Dietas</a>
-                        </li>
+                        
                         {/*
                         <li>
                                 <a className="nav-link" data-bs-toggle="tab" href="#Img">imagen</a>
@@ -149,11 +146,7 @@ export default class CreateNote extends Component {
 
                 <div className="tab-content">
                         <div className="tab-pane active" id="Rutinas">
-                        {/*
-                        this.state.rut.map(ruti => (<Rutina key={ruti._id} note={ruti}/>*/
-                                <CreateRutina />
-                                /* ))*/
-                        }
+                        
                         </div>
                         {/*<div className='tab-pane active' id='Img'>
                                 <ImageF/>
