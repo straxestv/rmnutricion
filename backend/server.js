@@ -17,7 +17,7 @@ import userAdm from'./routes/userAdm.js';
 dotenv.config();
 
 mongoose
-  .connect(process.env.MONGODB_URI, {
+  .connect("mongodb+srv://eduardgamerx66:19631964EDD@cluster0.hsugtcw.mongodb.net/", {
     useNewUrlParser: true, 
 
     useUnifiedTopology: true 
